@@ -1,4 +1,4 @@
-// Proyecto JS de Maximiliano Muñiz para CoderHouse
+// Proyecto JS de Maximiliano Muñiz para CoderHouse 2023
 
 // Bienvenida
 let nombreUsuario = prompt('Ingresa tu Nombre de Usuario');
