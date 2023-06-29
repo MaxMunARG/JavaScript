@@ -1,5 +1,3 @@
-// Proyecto JS de Maximiliano Muñiz para CoderHouse 2023
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,11 +17,25 @@
     <div class="container">
       <div style="background-color: #aaa">
         <h1 class="text-center">Productos</h1></div>
-      <div>
-        <div id="misprods" class="row"></div>
-      </div>
-      <div>
-        <h4>Tu carrito:</h4>
+
+        <div>
+          <div>
+            <h3>Ordenar por precio</h3>
+            <label for="min">
+              Mín $
+              <input type="number" name="min" id="min" min="0" maxlength="6">
+            </label>
+            <label for="max">
+              Máx $ 
+              <input type="number" name="max" id="max" max="300000" maxlength="6">
+            </label>
+            <input type="submit" value="filtrar" class="btn btn-dark" id="filtro">
+          </div>
+          <div id="misprods" class="row">
+          </div>
+        </div>
+        
+        <h4>Mi carrito:</h4>
         <table class="table table-striped">
           <thead>
             <tr>

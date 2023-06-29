@@ -2,7 +2,7 @@
 
 const productos = 
 [
-        {
+{
         id: 1,
         foto: "https://static.wixstatic.com/media/b42d63_5551e92db9b242c78ffef529dc323b76~mv2.png/v1/fill/w_938,h_938,al_c,usm_0.66_1.00_0.01/b42d63_5551e92db9b242c78ffef529dc323b76~mv2.png",
         nombre: "Trezor Model T",
