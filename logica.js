@@ -1,10 +1,11 @@
 // Proyecto JS de Maximiliano Muñiz para CoderHouse 2023
 
 console.table(productos);
-const carro = JSON.parse(localStorage.getItem('carro')) || []; 
+let carro = JSON.parse(localStorage.getItem('carro')) || []; 
 let tablaBody = document.getElementById('tablabody');
 let contenedorProds = document.getElementById('misprods');
-
+let finalizarBtn = document.getElementById("finalizar");
+let vaciarBtn = document.getElementById("vaciar");
 function renderizarProductos(listaProds){
     contenedorProds.innerHTML='';
     for(const prod of listaProds){
@@ -37,16 +38,16 @@ function renderizarProductos(listaProds){
     }
 }
 
-renderizarProductos(productos);
-
 function agregarACarrito(producto){
     carro.push(producto);
-    console.table(carro);
+    console.table(carro);    
     tablaBody.innerHTML += `
         <tr>
             <td>${producto.id}</td>
             <td>${producto.nombre}</td>
             <td>${producto.precio}</td>
+            <td><button class="btn btn-light" onclick="eliminar(event)">🛒</button></td>
+            </tr>
         </tr>
     `;
     let total = carro.reduce((ac,prod)=> ac + prod.precio,0);
@@ -55,6 +56,7 @@ function agregarACarrito(producto){
     localStorage.setItem('carro',JSON.stringify(carro));
 }
 
+//Filtros
 let filtro = document.getElementById('filtro');
 let min = document.getElementById('min');
 let max = document.getElementById('max');
@@ -73,4 +75,72 @@ filtro.onclick = () => {
         console.log(listaFiltrados);
         renderizarProductos(listaFiltrados);
     }
+}
+
+(carro.length != 0) && dibujarTabla();
+
+function dibujarTabla(){
+    for(const producto of carro){
+        document.getElementById("tablabody").innerHTML += `
+        <tr>
+            <td>${producto.id}</td>
+            <td>${producto.nombre}</td>
+            <td>${producto.precio}</td>
+            <td><button class="btn btn-light" onclick="eliminar(event)">🛒</button></td>
+        </tr>
+    `;
+    }
+    totalCarrito = carro.reduce((acumulador,producto)=> acumulador + producto.precio,0);
+    let infoTotal = document.getElementById("total");
+    infoTotal.innerText="Total a pagar $: "+totalCarrito;
+    
+}
+
+function eliminar(ev){
+    console.log(ev);
+    let fila = ev.target.parentElement.parentElement;
+    console.log(fila);
+    let id = fila.children[0].innerText;
+    console.log(id);
+    let indice = carro.findIndex(producto => producto.id == id);
+    console.log(indice)
+     carro.splice(indice,1);
+    console.table(carro);
+    fila.remove();
+    let preciosAcumulados = carro.reduce((acumulador,producto)=>acumulador+producto.precio,0);
+    total.innerText="Total a pagar $: "+preciosAcumulados;
+
+    localStorage.setItem("carro",JSON.stringify(carro));
+}
+
+let botones = document.getElementsByClassName('compra');
+for(const boton of botones){
+    boton.addEventListener('click',()=>{
+        const prodACarro = productos.find((producto) => producto.id == boton.id);
+        console.log(prodACarro);
+        agregarACarrito(prodACarro);
+    })
+
+    boton.onmouseover = () => {
+        boton.classList.replace('btn-primary','btn-warning');
+    }
+    boton.onmouseout = () => {
+        boton.classList.replace('btn-warning','btn-primary');
+    }
+}
+
+finalizarBtn.onclick=()=>{
+    carro=[];
+    document.getElementById('tablabody').innerHTML='';
+    document.getElementById('total').innerText = 'Total a pagar $:';
+    Swal.fire('Gracias por tu compra','Pronto la recibirás','success');
+    localStorage.removeItem("carro");
+}
+
+vaciarBtn.onclick=()=>{
+    carro=[];
+    document.getElementById('tablabody').innerHTML='';
+    document.getElementById('total').innerText = 'Total a pagar $:';
+    Swal.fire('Hemos vaciado el carro','Puedes volver a comenzar','success')
+    localStorage.removeItem("carro");
 }
